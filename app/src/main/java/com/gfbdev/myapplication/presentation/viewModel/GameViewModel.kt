@@ -86,7 +86,7 @@ class GameViewModel(
 
         val currentDate = Date()
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", java.util.Locale.getDefault())
 
         val formattedDate = dateFormat.format(currentDate)
 

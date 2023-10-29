@@ -104,7 +104,7 @@ fun NavController(
                 {
                     PastGamesScreen(
                         modifier = modifier,
-                        pastPlays = gameViewModel.pastPlays.collectAsState().value,
+                        pastPlays = gameViewModel.pastPlays.collectAsState().value.reversed(),
                         onDeleteAll = { gameViewModel.deleteAll() }
                     )
                 }
