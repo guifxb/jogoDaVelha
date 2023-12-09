@@ -30,11 +30,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.gfbdev.myapplication.R
 import com.gfbdev.myapplication.domain.PastPlay
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -48,6 +50,7 @@ fun PastGamesScreen(
 ) {
 
     var deleteAllDialogShown by remember { mutableStateOf(false) }
+    val bannerAd = LocalContext.current.getString(R.string.AD_BANNER_KEY)
 
     if (pastPlays.isEmpty()) {
         Text(text = "Nenhuma partida encontrada.",
@@ -70,7 +73,7 @@ fun PastGamesScreen(
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
             if (index % 3 == 0) {
-                AdBanner()
+                AdBanner(bannerAd)
                 Divider(
                     color = Color.LightGray,
                     thickness = 1.dp,
@@ -132,13 +135,13 @@ fun PastGamesScreen(
 }
 
 @Composable
-fun AdBanner() {
+fun AdBanner(bannerAd: String) {
     AndroidView(
         modifier = Modifier.fillMaxWidth(),
         factory = { context ->
             AdView(context).apply {
                 setAdSize(AdSize.BANNER)
-                adUnitId = "ca-app-pub-3940256099942544/6300978111"
+                adUnitId = bannerAd
                 loadAd(AdRequest.Builder().build())
             }
         }

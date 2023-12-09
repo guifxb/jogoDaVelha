@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.gfbdev.myapplication.R
 import com.gfbdev.myapplication.presentation.viewModel.JogoDaVelha
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -44,6 +46,7 @@ fun GameScreen(
 
     ) {
     val boardState = currentGame.getBoardState().board
+    val bannerAd = LocalContext.current.getString(R.string.AD_BANNER_KEY)
 
     Column(
         modifier = modifier,
@@ -114,7 +117,7 @@ fun GameScreen(
             factory = { context ->
                 AdView(context).apply {
                     setAdSize(AdSize.BANNER)
-                    adUnitId = "ca-app-pub-3940256099942544/6300978111"
+                    adUnitId = bannerAd
                     loadAd(AdRequest.Builder().build())
                 }
             }
