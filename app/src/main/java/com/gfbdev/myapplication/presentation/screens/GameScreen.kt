@@ -27,7 +27,11 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.gfbdev.myapplication.presentation.viewModel.JogoDaVelha
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 
 
 @Composable
@@ -40,7 +44,6 @@ fun GameScreen(
 
     ) {
     val boardState = currentGame.getBoardState().board
-
 
     Column(
         modifier = modifier,
@@ -105,6 +108,17 @@ fun GameScreen(
         ) {
             Text("Reiniciar")
         }
+
+        AndroidView(
+            modifier = Modifier.fillMaxWidth(),
+            factory = { context ->
+                AdView(context).apply {
+                    setAdSize(AdSize.BANNER)
+                    adUnitId = "ca-app-pub-3940256099942544/6300978111"
+                    loadAd(AdRequest.Builder().build())
+                }
+            }
+        )
     }
 }
 
@@ -112,9 +126,9 @@ fun GameScreen(
 
 private fun itemSize(density: Density, size: Int): Dp {
 
-    val avaliableSize = 300.dp
+    val availableSize = 300.dp
     return with(density) {
-        avaliableSize / size.toFloat()
+        availableSize / size.toFloat()
     }
 }
 

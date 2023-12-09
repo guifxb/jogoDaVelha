@@ -2,25 +2,22 @@ package com.gfbdev.myapplication.presentation.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,10 +34,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,7 +51,7 @@ import androidx.compose.ui.unit.sp
 import com.gfbdev.myapplication.R
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun StartScreen(
     player1State: TextFieldValue,
@@ -64,35 +65,44 @@ fun StartScreen(
 ) {
     val logo = painterResource(R.drawable.start_screen)
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val boardSizes = listOf("3x3", "4x4", "5x5", "6x6", "7x7", "8x8", "9x9", "10x10")
     var selectedBoardSize by remember { mutableIntStateOf(0) }
 
     var player1Error by rememberSaveable { mutableStateOf(false) }
     var player2Error by rememberSaveable { mutableStateOf(false) }
 
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val itemWidth = screenWidth / 3
+
     fun validate(text: String): Boolean {
         return " " in text || text.isEmpty()
     }
-
     Column(
-        modifier = Modifier
-            .scrollable(rememberScrollState(), orientation = Orientation.Vertical,true),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Image(
             painter = logo,
             contentDescription = null,
-            modifier = Modifier.size(300.dp, 200.dp)
+            modifier = Modifier
+                .fillMaxWidth(fraction = 0.6f)
+                .aspectRatio(1.5f)
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
 
         OutlinedTextField(
             value = player1State,
             onValueChange = onPlayer1Changed,
             isError = player1Error,
-            keyboardActions = KeyboardActions { player1Error = validate(player1State.text) },
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                    player1Error = validate(player1State.text)
+                }
+            ),
             label = { Text("Jogador 1") },
             modifier = Modifier.padding(4.dp),
             singleLine = true,
@@ -104,38 +114,39 @@ fun StartScreen(
                 }
             }
         )
-        OutlinedTextField(
-            value = player2State,
-            onValueChange = onPlayer2Changed,
-            label = { Text("Jogador 2") },
-            modifier = Modifier.padding(4.dp),
-            singleLine = true,
-            enabled = !isCPU,
-            isError = player2Error,
-            keyboardActions = KeyboardActions { player2Error = validate(player2State.text) },
-            supportingText = {
-                if (player2Error) {
-                    Text(
-                        "Nome inválido. Não use espaço em branco.",
-                    )
-                }
-            }
-        )
 
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(0.9f),
+            horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                "Oponente: ",
-                style = LocalTextStyle.current.copy(
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    fontSize = 28.sp
+            //Spacer(modifier = Modifier.width(itemWidth))
+            OutlinedTextField(
+                value = player2State,
+                onValueChange = onPlayer2Changed,
+                label = { Text("Jogador 2") },
+                modifier = Modifier.width(itemWidth).weight(0.33f),
+                singleLine = true,
+                enabled = !isCPU,
+                isError = player2Error,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                    player2Error = validate(player2State.text) }
                 ),
+                supportingText = {
+                    if (player2Error) {
+                        Text(
+                            "Nome inválido. Não use espaço em branco.",
+                        )
+                    }
+                }
             )
             SegmentedControl(
+                modifier = Modifier.width(itemWidth).weight(0.33f),
                 defaultSelectedItemIndex = if (isCPU) 1 else 0,
                 items = listOf(
                     "👵🏼",
@@ -146,14 +157,12 @@ fun StartScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         Text(
             text = "Tamanho do tabuleiro",
             style = LocalTextStyle.current.copy(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                fontSize = 28.sp
+                fontSize = 18.sp
             ),
         )
 
@@ -162,8 +171,6 @@ fun StartScreen(
             defaultSelectedItemIndex = selectedBoardSize,
             onItemSelection = { selectedBoardSize = it }
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         Row(modifier = Modifier.fillMaxWidth()) {
             Button(
@@ -201,9 +208,9 @@ fun StartScreen(
     }
 }
 
-
 @Composable
 fun SegmentedControl(
+    modifier: Modifier = Modifier,
     items: List<String>,
     defaultSelectedItemIndex: Int = 0,
     itemWidth: Dp = 120.dp,
@@ -214,7 +221,7 @@ fun SegmentedControl(
     val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
 
     LazyVerticalGrid(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 0.dp, top = 0.dp),
+        modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 0.dp, top = 0.dp),
         columns = GridCells.Fixed(if (items.size < 4) items.size else 4),
         verticalArrangement = Arrangement.SpaceAround,
     ) {
@@ -222,13 +229,13 @@ fun SegmentedControl(
             OutlinedButton(
                 modifier = when (index) {
                     4, 5, 6, 7 -> {
-                        Modifier
+                        modifier
                             .width(itemWidth)
                             .offset(0.dp, (-10).dp)
                     }
 
                     else -> {
-                        Modifier
+                        modifier
                             .width(itemWidth)
                     }
                 },
@@ -308,7 +315,8 @@ fun SegmentedControl(
             ) {
                 Text(
                     text = item,
-                    fontWeight = FontWeight.Normal,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Light,
                     color = if (selectedIndex.value == index) {
                         Color.White
                     } else {

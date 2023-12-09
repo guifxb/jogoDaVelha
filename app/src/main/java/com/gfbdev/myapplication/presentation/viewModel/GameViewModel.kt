@@ -73,8 +73,10 @@ class GameViewModel(
     fun makeMove(row: Int, col: Int) {
         val move = Move(row, col)
 
-        _jogoDaVelha.value.makeMove(move)
-        checkGameStatus()
+        if (_jogoDaVelha.value.checkGameStatus() == GameStatus.IN_PROGRESS) {
+            _jogoDaVelha.value.makeMove(move)
+            checkGameStatus()
+        }
 
         if (isCPU.value && _jogoDaVelha.value.checkGameStatus() == GameStatus.IN_PROGRESS) {
             _jogoDaVelha.value.makeMove(_jogoDaVelha.value.makeCpuMove())

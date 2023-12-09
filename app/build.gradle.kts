@@ -87,4 +87,8 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-navigation:3.2.0")
     implementation("io.insert-koin:koin-androidx-compose:3.2.0")
     testImplementation("io.insert-koin:koin-test-junit4:3.2.0")
+
+    //adMob
+    implementation ("com.google.android.gms:play-services-ads:22.5.0")
+
 }
