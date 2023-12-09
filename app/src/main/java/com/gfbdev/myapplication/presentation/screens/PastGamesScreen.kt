@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
@@ -34,7 +34,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.gfbdev.myapplication.domain.PastPlay
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 
 @Composable
 fun PastGamesScreen(
@@ -47,7 +51,9 @@ fun PastGamesScreen(
 
     if (pastPlays.isEmpty()) {
         Text(text = "Nenhuma partida encontrada.",
-            modifier = Modifier.padding(16.dp).size(48.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .size(48.dp),
             textAlign = TextAlign.Center
         )
     }
@@ -56,13 +62,21 @@ fun PastGamesScreen(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp)
     ) {
-        items(pastPlays) { pastPlay ->
+        itemsIndexed(pastPlays) { index, pastPlay,  ->
             PastPlayCard(pastPlay)
             Divider(
                 color = Color.LightGray,
                 thickness = 1.dp,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
+            if (index % 3 == 0) {
+                AdBanner()
+                Divider(
+                    color = Color.LightGray,
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+            }
         }
     }
 
@@ -115,6 +129,20 @@ fun PastGamesScreen(
             )
         }
     }
+}
+
+@Composable
+fun AdBanner() {
+    AndroidView(
+        modifier = Modifier.fillMaxWidth(),
+        factory = { context ->
+            AdView(context).apply {
+                setAdSize(AdSize.BANNER)
+                adUnitId = "ca-app-pub-3940256099942544/6300978111"
+                loadAd(AdRequest.Builder().build())
+            }
+        }
+    )
 }
 
 @Composable

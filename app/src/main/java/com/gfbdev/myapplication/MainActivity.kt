@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.gfbdev.myapplication.presentation.navigation.NavController
 import com.gfbdev.myapplication.ui.theme.JogoDaVelhaTheme
+import com.google.android.gms.ads.MobileAds
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,8 +23,6 @@ class MainActivity : ComponentActivity() {
                 NavController()
             }
         }
-
+        MobileAds.initialize(this)
     }
 }
-
-
