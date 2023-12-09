@@ -34,6 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.gfbdev.myapplication.R
 import com.gfbdev.myapplication.presentation.screens.GameScreen
 import com.gfbdev.myapplication.presentation.screens.PastGamesScreen
 import com.gfbdev.myapplication.presentation.screens.StartScreen
@@ -64,6 +65,7 @@ fun NavController(
     var lastAdShownTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
     val adLoadInterval = TimeUnit.MINUTES.toMillis(2)
     val canNavigateBack = navController.previousBackStackEntry != null
+    val interstitialAd = activity.getString(R.string.AD_INTERSTICIAL_KEY)
 
     val currentScreen =
         AppScreen.valueOf(backStackEntry?.destination?.route ?: AppScreen.START.name)
@@ -73,7 +75,7 @@ fun NavController(
     fun loadInterstitialAd(activity: Activity, callback: (InterstitialAd?) -> Unit) {
         isAdLoading = true
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(activity, "ca-app-pub-3940256099942544/1033173712",
+        InterstitialAd.load(activity, interstitialAd,
             adRequest, object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     Log.d(TAG, adError.toString())
