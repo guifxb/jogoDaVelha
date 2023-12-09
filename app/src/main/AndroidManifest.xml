@@ -17,7 +17,7 @@
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1128988600920534~3096598328"/>
+            android:value="@string/AD_MOB_APP_ID"/>
         <activity
             android:screenOrientation="portrait"
             android:name=".MainActivity"
