@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -52,7 +54,6 @@ android {
 
 dependencies {
 
-
     //Core
     implementation("androidx.navigation:navigation-compose:2.7.4")
     implementation("androidx.core:core-ktx:1.9.0")
@@ -90,5 +91,10 @@ dependencies {
 
     //adMob
     implementation ("com.google.android.gms:play-services-ads:22.5.0")
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
 }
