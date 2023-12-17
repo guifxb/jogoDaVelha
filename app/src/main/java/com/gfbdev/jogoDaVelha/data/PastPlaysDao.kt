@@ -1,10 +1,10 @@
-package com.gfbdev.myapplication.data
+package com.gfbdev.jogoDaVelha.data
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.gfbdev.myapplication.domain.PastPlay
+import com.gfbdev.jogoDaVelha.domain.PastPlay
 
 @Dao
 interface PastPlaysDao {

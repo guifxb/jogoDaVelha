@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication.presentation.viewModel
+package com.gfbdev.jogoDaVelha.presentation.viewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gfbdev.myapplication.data.PastPlaysRepository
-import com.gfbdev.myapplication.domain.PastPlay
+import com.gfbdev.jogoDaVelha.data.PastPlaysRepository
+import com.gfbdev.jogoDaVelha.domain.PastPlay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

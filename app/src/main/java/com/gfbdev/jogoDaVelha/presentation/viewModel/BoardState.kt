@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication.presentation.viewModel
+package com.gfbdev.jogoDaVelha.presentation.viewModel
 
 import kotlin.random.Random
 

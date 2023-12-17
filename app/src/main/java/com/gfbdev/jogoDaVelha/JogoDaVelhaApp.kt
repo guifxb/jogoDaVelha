@@ -1,7 +1,7 @@
-package com.gfbdev.myapplication
+package com.gfbdev.jogoDaVelha
 
 import android.app.Application
-import com.gfbdev.myapplication.di.appModule
+import com.gfbdev.jogoDaVelha.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

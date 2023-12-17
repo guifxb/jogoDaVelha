@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "709478217211",
+    "project_id": "jogo-da-velha-8ba12",
+    "storage_bucket": "jogo-da-velha-8ba12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709478217211:android:2e21e9cb393f249b20875e",
+        "android_client_info": {
+          "package_name": "com.gfbdev.jogoDaVelha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiAsbqdswArGMqyYOum1poZC4uFLSQVB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

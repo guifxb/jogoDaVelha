@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.gfbdev.myapplication"
+    namespace = "com.gfbdev.jogoDaVelha"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.gfbdev.myapplication"
+        applicationId = "com.gfbdev.jogoDaVelha"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

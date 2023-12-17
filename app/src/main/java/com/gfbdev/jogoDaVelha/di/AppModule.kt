@@ -1,8 +1,8 @@
-package com.gfbdev.myapplication.di
+package com.gfbdev.jogoDaVelha.di
 
-import com.gfbdev.myapplication.data.PastPlaysDatabase
-import com.gfbdev.myapplication.data.PastPlaysRepository
-import com.gfbdev.myapplication.presentation.viewModel.GameViewModel
+import com.gfbdev.jogoDaVelha.data.PastPlaysDatabase
+import com.gfbdev.jogoDaVelha.data.PastPlaysRepository
+import com.gfbdev.jogoDaVelha.presentation.viewModel.GameViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

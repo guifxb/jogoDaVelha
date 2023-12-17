@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication.presentation.screens
+package com.gfbdev.jogoDaVelha.presentation.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -48,7 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.gfbdev.myapplication.R
+import com.gfbdev.jogoDaVelha.R
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
