@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication
+package com.gfbdev.jogoDaVelha
 
 import org.junit.Test
 

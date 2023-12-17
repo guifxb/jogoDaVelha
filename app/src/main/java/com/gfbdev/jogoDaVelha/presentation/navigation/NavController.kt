@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication.presentation.navigation
+package com.gfbdev.jogoDaVelha.presentation.navigation
 
 import android.app.Activity
 import android.content.ContentValues.TAG
@@ -34,11 +34,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.gfbdev.myapplication.R
-import com.gfbdev.myapplication.presentation.screens.GameScreen
-import com.gfbdev.myapplication.presentation.screens.PastGamesScreen
-import com.gfbdev.myapplication.presentation.screens.StartScreen
-import com.gfbdev.myapplication.presentation.viewModel.GameViewModel
+import com.gfbdev.jogoDaVelha.R
+import com.gfbdev.jogoDaVelha.presentation.screens.GameScreen
+import com.gfbdev.jogoDaVelha.presentation.screens.PastGamesScreen
+import com.gfbdev.jogoDaVelha.presentation.screens.StartScreen
+import com.gfbdev.jogoDaVelha.presentation.viewModel.GameViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError

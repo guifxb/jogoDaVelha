@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication.presentation.screens
+package com.gfbdev.jogoDaVelha.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,8 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.gfbdev.myapplication.R
-import com.gfbdev.myapplication.domain.PastPlay
+import com.gfbdev.jogoDaVelha.R
+import com.gfbdev.jogoDaVelha.domain.PastPlay
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView

@@ -1,10 +1,10 @@
-package com.gfbdev.myapplication.data
+package com.gfbdev.jogoDaVelha.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.gfbdev.myapplication.domain.PastPlay
+import com.gfbdev.jogoDaVelha.domain.PastPlay
 
 
 @Database(entities = [PastPlay::class], version = 2, exportSchema = false)

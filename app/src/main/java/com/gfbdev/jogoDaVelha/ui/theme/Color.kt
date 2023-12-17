@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication.ui.theme
+package com.gfbdev.jogoDaVelha.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

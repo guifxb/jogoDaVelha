@@ -1,6 +1,6 @@
-package com.gfbdev.myapplication.data
+package com.gfbdev.jogoDaVelha.data
 
-import com.gfbdev.myapplication.domain.PastPlay
+import com.gfbdev.jogoDaVelha.domain.PastPlay
 
 class PastPlaysRepository(private val pastPlaysDao: PastPlaysDao) {
 

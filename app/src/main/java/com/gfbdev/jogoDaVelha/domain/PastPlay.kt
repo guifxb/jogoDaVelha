@@ -1,4 +1,4 @@
-package com.gfbdev.myapplication.domain
+package com.gfbdev.jogoDaVelha.domain
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
