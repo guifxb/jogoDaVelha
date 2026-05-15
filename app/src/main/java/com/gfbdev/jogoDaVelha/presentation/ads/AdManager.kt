@@ -2,6 +2,7 @@ package com.gfbdev.jogoDaVelha.presentation.ads
 
 import android.app.Activity
 import com.gfbdev.jogoDaVelha.R
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
@@ -57,7 +58,7 @@ class AdManager(private val activity: Activity) {
                 interstitialAd = null
                 onAdDismissed()
             }
-            override fun onAdFailedToShowFullScreenContent(error: com.google.android.gms.ads.AdError) {
+            override fun onAdFailedToShowFullScreenContent(error: AdError) {
                 interstitialAd = null
                 onAdDismissed()
             }

@@ -1,6 +1,5 @@
 package com.gfbdev.jogoDaVelha.presentation.navigation
 
-import android.app.Activity
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
