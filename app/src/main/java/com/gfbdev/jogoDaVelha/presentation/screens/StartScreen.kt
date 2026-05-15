@@ -47,13 +47,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.gfbdev.jogoDaVelha.R
-
+import com.gfbdev.jogoDaVelha.ui.theme.Dimens
+import com.google.common.collect.ImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun StartScreen(
+    modifier: Modifier = Modifier,
     player1State: TextFieldValue,
     onPlayer1Changed: (TextFieldValue) -> Unit,
     player2State: TextFieldValue,
@@ -63,147 +64,202 @@ fun StartScreen(
     isCPU: Boolean,
     onCPUChanged: (Boolean) -> Unit,
 ) {
-    val logo = painterResource(R.drawable.start_screen)
-
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    val boardSizes = listOf("3x3", "4x4", "5x5", "6x6", "7x7", "8x8", "9x9", "10x10")
+    val boardSizes = remember {
+        ImmutableList.of("3x3", "4x4", "5x5", "6x6", "7x7", "8x8", "9x9", "10x10")
+    }
+    
     var selectedBoardSize by remember { mutableIntStateOf(0) }
-
     var player1Error by rememberSaveable { mutableStateOf(false) }
     var player2Error by rememberSaveable { mutableStateOf(false) }
 
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val itemWidth = screenWidth / 3
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    fun validate(text: String): Boolean {
-        return " " in text || text.isEmpty()
-    }
+    fun validate(text: String): Boolean = " " in text || text.isEmpty()
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = Dimens.ScreenPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Image(
-            painter = logo,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth(fraction = 0.6f)
-                .aspectRatio(1.5f)
+        HeaderSection()
+
+        PlayersInputSection(
+            player1State = player1State,
+            onPlayer1Changed = onPlayer1Changed,
+            player1Error = player1Error,
+            player2State = player2State,
+            onPlayer2Changed = onPlayer2Changed,
+            player2Error = player2Error,
+            isCPU = isCPU,
+            onCPUChanged = onCPUChanged,
+            onPlayer1Done = {
+                keyboardController?.hide()
+                player1Error = validate(player1State.text)
+            },
+            onPlayer2Done = {
+                keyboardController?.hide()
+                player2Error = validate(player2State.text)
+            }
         )
 
+        BoardSizeSection(
+            boardSizes = boardSizes,
+            selectedBoardSize = selectedBoardSize,
+            onSizeSelected = { selectedBoardSize = it }
+        )
+
+        ActionButtonsSection(
+            onPlayClicked = {
+                player1Error = validate(player1State.text)
+                player2Error = validate(player2State.text)
+                if (!player1Error && !player2Error) {
+                    onGameClicked(selectedBoardSize + 3)
+                }
+            },
+            onHistoryClicked = onHistoryClicked
+        )
+    }
+}
+
+@Composable
+private fun HeaderSection() {
+    Image(
+        painter = painterResource(R.drawable.start_screen),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxWidth(fraction = 0.6f)
+            .aspectRatio(1.5f)
+    )
+}
+
+@Composable
+private fun PlayersInputSection(
+    player1State: TextFieldValue,
+    onPlayer1Changed: (TextFieldValue) -> Unit,
+    player1Error: Boolean,
+    player2State: TextFieldValue,
+    onPlayer2Changed: (TextFieldValue) -> Unit,
+    player2Error: Boolean,
+    isCPU: Boolean,
+    onCPUChanged: (Boolean) -> Unit,
+    onPlayer1Done: () -> Unit,
+    onPlayer2Done: () -> Unit
+) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val itemWidth = screenWidth / 3
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         OutlinedTextField(
             value = player1State,
             onValueChange = onPlayer1Changed,
             isError = player1Error,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    keyboardController?.hide()
-                    player1Error = validate(player1State.text)
-                }
-            ),
+            keyboardActions = KeyboardActions(onDone = { onPlayer1Done() }),
             label = { Text("Jogador 1") },
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             supportingText = {
                 if (player1Error) {
-                    Text(
-                        "Nome inválido. Não use espaço em branco.",
-                    )
+                    Text("Nome inválido. Não use espaço.", fontSize = Dimens.SmallFont)
                 }
             }
         )
 
         Row(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(0.9f),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            //Spacer(modifier = Modifier.width(itemWidth))
             OutlinedTextField(
                 value = player2State,
                 onValueChange = onPlayer2Changed,
                 label = { Text("Jogador 2") },
-                modifier = Modifier.width(itemWidth).weight(0.33f),
+                modifier = Modifier
+                    .width(itemWidth)
+                    .weight(0.33f),
                 singleLine = true,
                 enabled = !isCPU,
                 isError = player2Error,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                    player2Error = validate(player2State.text) }
-                ),
+                keyboardActions = KeyboardActions(onDone = { onPlayer2Done() }),
                 supportingText = {
                     if (player2Error) {
-                        Text(
-                            "Nome inválido. Não use espaço em branco.",
-                        )
+                        Text("Nome inválido. Não use espaço.", fontSize = Dimens.SmallFont)
                     }
                 }
             )
             SegmentedControl(
-                modifier = Modifier.width(itemWidth).weight(0.33f),
+                modifier = Modifier
+                    .width(itemWidth)
+                    .weight(0.20f),
                 defaultSelectedItemIndex = if (isCPU) 1 else 0,
-                items = listOf(
-                    "👵🏼",
-                    "🤖",
-                )
-            ) {
-                onCPUChanged(it == 1)
-            }
+                items= ImmutableList.of("👵🏼", "🤖"),
+                onItemSelection = { onCPUChanged(it == 1) }
+            )
         }
+    }
+}
 
+@Composable
+private fun BoardSizeSection(
+    boardSizes: ImmutableList<String>,
+    selectedBoardSize: Int,
+    onSizeSelected: (Int) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Text(
             text = "Tamanho do tabuleiro",
             style = LocalTextStyle.current.copy(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                fontSize = 18.sp
+                fontSize = Dimens.MediumFont
             ),
         )
 
         SegmentedControl(
             items = boardSizes,
             defaultSelectedItemIndex = selectedBoardSize,
-            onItemSelection = { selectedBoardSize = it }
+            onItemSelection = onSizeSelected
         )
+    }
+}
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Button(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .wrapContentWidth()
-                    .fillMaxWidth(0.5f), onClick = {
-                    player1Error = validate(player1State.text)
-                    player2Error = validate(player2State.text)
-                    if (!player1Error && !player2Error) {
-                        onGameClicked(selectedBoardSize + 3)
-                    }
-                }
-            ) {
-                Text(
-                    "Jogar",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
-                )
-            }
-            Button(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .wrapContentWidth()
-                    .fillMaxWidth(), onClick = { onHistoryClicked() }
-            ) {
-                Text(
-                    text = "Histórico",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Visible
-                )
-            }
+@Composable
+private fun ActionButtonsSection(
+    onPlayClicked: () -> Unit,
+    onHistoryClicked: () -> Unit
+) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Button(
+            modifier = Modifier
+                .padding(Dimens.ItemPadding)
+                .wrapContentWidth()
+                .fillMaxWidth(0.5f),
+            onClick = onPlayClicked
+        ) {
+            Text("Jogar", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+        }
+        Button(
+            modifier = Modifier
+                .padding(Dimens.ItemPadding)
+                .wrapContentWidth()
+                .fillMaxWidth(),
+            onClick = onHistoryClicked
+        ) {
+            Text(
+                text = "Histórico",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Visible
+            )
         }
     }
 }
@@ -211,7 +267,7 @@ fun StartScreen(
 @Composable
 fun SegmentedControl(
     modifier: Modifier = Modifier,
-    items: List<String>,
+    items: ImmutableList<String>,
     defaultSelectedItemIndex: Int = 0,
     itemWidth: Dp = 120.dp,
     cornerRadius: Int = 10,
@@ -221,7 +277,7 @@ fun SegmentedControl(
     val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
 
     LazyVerticalGrid(
-        modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 0.dp, top = 0.dp),
+        modifier = modifier.padding(Dimens.ItemPadding),
         columns = GridCells.Fixed(if (items.size < 4) items.size else 4),
         verticalArrangement = Arrangement.SpaceAround,
     ) {
@@ -233,7 +289,6 @@ fun SegmentedControl(
                             .width(itemWidth)
                             .offset(0.dp, (-10).dp)
                     }
-
                     else -> {
                         modifier
                             .width(itemWidth)
@@ -241,7 +296,7 @@ fun SegmentedControl(
                 },
                 onClick = {
                     selectedIndex.value = index
-                    onItemSelection(selectedIndex.value)
+                    onItemSelection(index)
                 },
                 shape = when (index) {
                     0 -> if (items.size < 4) {
@@ -259,21 +314,18 @@ fun SegmentedControl(
                             bottomEndPercent = 0
                         )
                     }
-
                     3 -> RoundedCornerShape(
                         topStartPercent = 0,
                         topEndPercent = cornerRadius,
                         bottomStartPercent = 0,
                         bottomEndPercent = 0
                     )
-
                     4 -> RoundedCornerShape(
                         topStartPercent = 0,
                         topEndPercent = 0,
                         bottomStartPercent = cornerRadius,
                         bottomEndPercent = 0
                     )
-
                     items.size - 1 -> if (items.size < 4) {
                         RoundedCornerShape(
                             topStartPercent = 0,
@@ -289,7 +341,6 @@ fun SegmentedControl(
                             bottomEndPercent = cornerRadius
                         )
                     }
-
                     else -> RoundedCornerShape(
                         topStartPercent = 0,
                         topEndPercent = 0,
@@ -299,16 +350,10 @@ fun SegmentedControl(
                 },
                 border = BorderStroke(
                     1.dp,
-                    if (selectedIndex.value == index) {
-                        color
-                    } else {
-                        color.copy(alpha = 0.75f)
-                    }
+                    if (selectedIndex.value == index) color else color.copy(alpha = 0.75f)
                 ),
                 colors = if (selectedIndex.value == index) {
-                    ButtonDefaults.outlinedButtonColors(
-                        containerColor = color
-                    )
+                    ButtonDefaults.outlinedButtonColors(containerColor = color)
                 } else {
                     ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent)
                 },
@@ -317,11 +362,7 @@ fun SegmentedControl(
                     text = item,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Light,
-                    color = if (selectedIndex.value == index) {
-                        Color.White
-                    } else {
-                        color.copy(alpha = 0.9f)
-                    },
+                    color = if (selectedIndex.value == index) Color.White else color.copy(alpha = 0.9f),
                 )
             }
         }
