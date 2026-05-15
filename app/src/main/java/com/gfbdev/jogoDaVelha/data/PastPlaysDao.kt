@@ -21,5 +21,4 @@ interface PastPlaysDao {
     @Query("SELECT * FROM past_plays WHERE winner = :winner")
     suspend fun get(winner: String): PastPlay
 
-
 }

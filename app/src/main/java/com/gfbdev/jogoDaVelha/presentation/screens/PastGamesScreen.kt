@@ -34,17 +34,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.gfbdev.jogoDaVelha.R
 import com.gfbdev.jogoDaVelha.domain.PastPlay
+import com.gfbdev.jogoDaVelha.ui.theme.Dimens
+import com.gfbdev.jogoDaVelha.ui.theme.PlayerXColor
+import com.gfbdev.jogoDaVelha.ui.theme.PlayerOColor
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
 @Composable
 fun PastGamesScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     pastPlays: List<PastPlay>,
     onDeleteAll: () -> Unit
 ) {
@@ -55,7 +57,7 @@ fun PastGamesScreen(
     if (pastPlays.isEmpty()) {
         Text(text = "Nenhuma partida encontrada.",
             modifier = Modifier
-                .padding(16.dp)
+                .padding(Dimens.ScreenPadding)
                 .size(48.dp),
             textAlign = TextAlign.Center
         )
@@ -63,21 +65,21 @@ fun PastGamesScreen(
 
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(Dimens.ScreenPadding)
     ) {
         itemsIndexed(pastPlays) { index, pastPlay,  ->
             PastPlayCard(pastPlay)
             Divider(
                 color = Color.LightGray,
                 thickness = 1.dp,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = Dimens.ComponentPadding)
             )
             if (index % 3 == 0) {
                 AdBanner(bannerAd)
                 Divider(
                     color = Color.LightGray,
                     thickness = 1.dp,
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = Dimens.ComponentPadding)
                 )
             }
         }
@@ -86,7 +88,7 @@ fun PastGamesScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(Dimens.ScreenPadding),
         contentAlignment = Alignment.BottomEnd
     ) {
         FloatingActionButton(
@@ -153,11 +155,11 @@ fun PastPlayCard(pastPlay: PastPlay) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(Dimens.ComponentPadding),
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(Dimens.ItemPadding)
                 .fillMaxWidth()
         ) {
             Row(
@@ -167,28 +169,28 @@ fun PastPlayCard(pastPlay: PastPlay) {
             ) {
                 Text(
                     text = if (pastPlay.winner == 1) "🏆 " + pastPlay.player1 else pastPlay.player1,
-                    color = Color.Blue,
-                    fontSize = 18.sp,
+                    color = PlayerXColor,
+                    fontSize = Dimens.MediumFont,
                     fontWeight = FontWeight.ExtraBold
                 )
-                Text(text = "  vs  ", fontSize = 18.sp)
+                Text(text = "  vs  ", fontSize = Dimens.MediumFont)
                 Text(
                     text = pastPlay.player2 + if (pastPlay.winner == 2) " 🏆" else "",
-                    color = Color.Red,
-                    fontSize = 18.sp,
+                    color = PlayerOColor,
+                    fontSize = Dimens.MediumFont,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = "${pastPlay.boardSize} x ${pastPlay.boardSize}",
                     color = Color.Gray,
-                    fontSize = 14.sp,
+                    fontSize = Dimens.SmallFont,
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Dimens.ComponentPadding))
             Text(
                 text = pastPlay.date,
-                fontSize = 12.sp
+                fontSize = Dimens.SmallFont
             )
         }
     }

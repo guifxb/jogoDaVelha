@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "com.gfbdev.jogoDaVelha"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.gfbdev.jogoDaVelha"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 29
+        targetSdk = 36
+        versionCode = 5
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -65,6 +65,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.4")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     //Testing
     testImplementation("junit:junit:4.13.2")
@@ -96,5 +97,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
+
+    //Lottie
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 
 }

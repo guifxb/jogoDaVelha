@@ -1,17 +1,21 @@
-*.iml
+# Project wide
 .gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
+.idea
+**/build/
 /captures
+/local.properties
+*.iml
+
+# Android specific
 .externalNativeBuild
 .cxx
-local.properties
-app/src/main/res/values/secrets.xml~
+/app/release/
+*.apk
+*.aab
+
+# User specific
+.DS_Store
+
+# Secrets and Configs
+app/src/main/res/values/secrets.xml
 app/google-services.json
